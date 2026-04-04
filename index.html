@@ -1,1 +1,167 @@
-<h1>Hello</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shahed | Tech & Style</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0a;
+            --text: #ffffff;
+            --accent: #ff007f; /* Cyberpunk Pink */
+            --card-bg: #111111;
+            --nav-bg: rgba(10, 10, 10, 0.8);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.5rem 10%;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            background: var(--nav-bg);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            border-bottom: 1px solid #222;
+        }
+
+        .logo { font-weight: 700; font-size: 1.2rem; letter-spacing: 1px; }
+        .logo span { color: var(--accent); }
+
+        nav ul { display: flex; list-style: none; gap: 2rem; }
+        nav a { color: var(--text); text-decoration: none; font-size: 0.9rem; transition: 0.3s; opacity: 0.7; }
+        nav a:hover { color: var(--accent); opacity: 1; }
+
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 10%;
+            background: radial-gradient(circle at 10% 20%, rgba(255, 0, 127, 0.05) 0%, transparent 50%);
+        }
+
+        h1 { font-size: clamp(2.5rem, 8vw, 4.5rem); line-height: 1.1; font-weight: 700; }
+        .highlight { color: var(--accent); }
+
+        .meta { margin-top: 1.5rem; font-size: 1.1rem; color: #888; font-weight: 300; }
+
+        section { padding: 8rem 10%; }
+        h2 { font-size: 2rem; margin-bottom: 3rem; border-left: 4px solid var(--accent); padding-left: 1rem; }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 16px;
+            border: 1px solid #222;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .card h3 { color: var(--accent); margin-bottom: 1rem; font-size: 1.4rem; }
+        .card p { font-size: 0.95rem; color: #aaa; }
+
+        .achievement-tag {
+            display: inline-block;
+            background: rgba(255, 0, 127, 0.1);
+            color: var(--accent);
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            margin-top: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 10%;
+            border-top: 1px solid #222;
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            nav ul { display: none; }
+            h1 { font-size: 3rem; }
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">SHAHED<span>.TECH</span></div>
+        <ul>
+            <li><a href="#work">Work</a></li>
+            <li><a href="#bio">Bio</a></li>
+            <li><a href="mailto:shahedzero@gmail.com">Connect</a></li>
+        </ul>
+    </nav>
+
+    <header>
+        <h1>Code with <span class="highlight">Precision</span>.<br>Design with <span class="highlight">Intent</span>.</h1>
+        <p class="meta">Student @ HSC 2027 • Technical Expert • Fashion Enthusiast</p>
+    </header>
+
+    <section id="work">
+        <h2>Selected Projects</h2>
+        <div class="grid">
+            <div class="card">
+                <h3>Genzthepixel</h3>
+                <p>An AI-powered mathematical ecosystem designed for students. Currently serving 90% of the local Ashuganj community.</p>
+                <div class="achievement-tag">Community Impact</div>
+            </div>
+            <div class="card">
+                <h3>Physics Simulation</h3>
+                <p>Developing a custom 2D wind and gravity engine in C and Assembly, prioritizing 100% mathematical accuracy.</p>
+                <div class="achievement-tag">Low-Level Programming</div>
+            </div>
+            <div class="card">
+                <h3>School Robotics</h3>
+                <p>Winner of the 2023 School Robotics Coding competition. Experienced in logic optimization and hardware integration.</p>
+                <div class="achievement-tag">1st Place Winner</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="bio" style="background: #0f0f0f;">
+        <h2>About Me</h2>
+        <p style="max-width: 700px; font-size: 1.1rem; color: #ccc;">
+            Based in Bangladesh, I bridge the gap between rigorous technical engineering and high-fashion aesthetics. 
+            Whether I'm configuring <strong>Hyprland</strong> dotfiles or building Android apps in <strong>Kotlin</strong>, 
+            my goal is to create digital experiences that are as beautiful as they are functional.
+        </p>
+    </section>
+
+    <footer>
+        <p>&copy; 2026 Sha Hed (Shahedzero). All rights reserved.</p>
+    </footer>
+</body>
+</html>
