@@ -9,51 +9,72 @@
         :root {
             --mocha: #8d6e63;
             --cocoa: #5d4037;
-            --glass-white: rgba(255, 255, 255, 0.75);
-            --modal-bg: rgba(255, 255, 255, 0.85);
+            --glass-white: rgba(255, 255, 255, 0.8);
+            --modal-bg: rgba(255, 255, 255, 0.9);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* --- BASE LAYOUT (Sticky Footer Logic) --- */
+        /* --- STICKY FOOTER & LAYOUT --- */
         html, body {
             height: 100%;
             margin: 0;
         }
 
         body {
-            background: linear-gradient(rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.2)), 
+            background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), 
                         url('cat-bg.jpg') no-repeat center center fixed;
             background-size: cover;
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
             display: flex;
-            flex-direction: column; /* Vertical stack */
+            flex-direction: column;
             color: var(--cocoa);
         }
 
-        /* --- HEADER & SEARCH --- */
-        .search-wrapper {
+        /* --- HEADER & SEARCH AREA --- */
+        header {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 40px 20px;
-            transition: all 0.4s ease;
-            flex-shrink: 0;
-            /* Initially fills middle space */
-            flex-grow: 1; 
+            padding: 20px;
+            transition: var(--transition);
+            flex-grow: 1; /* Center vertically on start */
+            z-index: 1000;
+        }
+
+        /* State when searching: Header becomes a fixed bar at the top */
+        body.searching header {
+            flex-grow: 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            flex-direction: row;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0 5%;
         }
 
         .logo {
-            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
             font-weight: 800;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             cursor: pointer;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: var(--transition);
         }
         .logo span { color: var(--mocha); }
 
+        body.searching .logo {
+            font-size: 1.5rem;
+            margin-bottom: 0;
+            margin-right: 20px;
+        }
+
         .search-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 580px;
             position: relative;
             display: flex;
             align-items: center;
@@ -61,98 +82,93 @@
 
         input[type="text"] {
             width: 100%;
-            padding: 16px 100px 16px 25px;
+            padding: 14px 110px 14px 25px;
             border-radius: 30px;
             border: 1px solid rgba(255, 255, 255, 0.5);
             outline: none;
             font-size: 16px;
             background: var(--glass-white);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            backdrop-filter: blur(5px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            transition: var(--transition);
+        }
+
+        input[type="text"]:focus {
+            background: white;
+            box-shadow: 0 4px 25px rgba(0, 0, 0, 0.15);
         }
 
         .search-btn {
             position: absolute;
-            right: 10px;
+            right: 8px;
             background: var(--mocha);
             color: white;
             border: none;
-            padding: 10px 20px;
-            border-radius: 22px;
+            padding: 9px 22px;
+            border-radius: 25px;
             cursor: pointer;
             font-weight: 600;
+            transition: 0.2s;
         }
 
-        /* --- STATE: SEARCHING --- */
-        body.searching .search-wrapper {
-            flex-grow: 0;
-            position: fixed;
-            top: 0;
-            width: 100%;
-            flex-direction: row;
-            justify-content: space-between;
-            padding: 15px 5%;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            z-index: 1000;
-        }
+        .search-btn:hover { background: var(--cocoa); }
 
-        body.searching .logo { font-size: 1.5rem; margin-bottom: 0; }
-
-        /* --- MAIN CONTENT --- */
+        /* --- RESULTS SECTION --- */
         main {
-            flex-grow: 1; /* Pushes footer down even if empty */
+            flex-grow: 1;
             width: 100%;
-            max-width: 900px;
+            max-width: 850px;
             margin: 0 auto;
-            padding: 120px 5% 40px 5%; /* Top padding accounts for fixed header */
-            display: none;
+            padding: 40px 20px;
+            display: none; /* Hidden until search */
+        }
+
+        /* Adjust padding when header is fixed */
+        body.searching main {
+            display: block;
+            padding-top: 110px; 
         }
 
         .result-item {
             background: var(--glass-white);
-            margin-bottom: 20px;
-            padding: 20px;
-            border-radius: 15px;
+            margin-bottom: 18px;
+            padding: 22px;
+            border-radius: 18px;
             backdrop-filter: blur(5px);
-            animation: slideUp 0.4s ease forwards;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: transform 0.2s;
         }
 
-        @keyframes slideUp {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+        .result-item:hover { transform: translateY(-3px); }
 
         .result-item a {
-            font-size: 1.3rem;
+            font-size: 1.25rem;
             color: #1a0dab;
             text-decoration: none;
             font-weight: 600;
-            display: block;
-            margin-bottom: 5px;
+            display: inline-block;
+            margin-bottom: 6px;
         }
 
-        /* --- MODAL (Glass Frame) --- */
+        /* --- MODAL (The Glass Frame) --- */
         #modal-overlay {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.4);
             z-index: 2000;
-            backdrop-filter: blur(8px);
+            backdrop-filter: blur(6px);
             justify-content: center;
             align-items: center;
         }
 
         #modal-content {
-            width: 85%; /* Side gaps */
-            height: 80%; /* Top/Bottom gaps */
+            width: 88%; height: 82%;
             background: var(--modal-bg);
-            border-radius: 25px;
+            border-radius: 28px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.4);
         }
 
@@ -164,7 +180,7 @@
             border-radius: 50%; display: flex;
             align-items: center; justify-content: center;
             cursor: pointer; font-size: 24px; z-index: 2100;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            color: var(--cocoa);
         }
 
         /* --- FOOTER --- */
@@ -173,37 +189,33 @@
             padding: 25px;
             text-align: center;
             background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(5px);
+            backdrop-filter: blur(10px);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
-        footer a { color: var(--cocoa); text-decoration: none; margin: 0 12px; font-size: 14px; }
+        footer a { color: var(--cocoa); text-decoration: none; margin: 0 15px; font-size: 14px; font-weight: 500; }
 
-        /* --- MOBILE RESPONSIVE --- */
-        @media (max-width: 600px) {
+        /* --- MOBILE --- */
+        @media (max-width: 650px) {
+            body.searching header { height: 70px; justify-content: flex-start; padding: 0 15px; }
             body.searching .logo { display: none; }
-            #modal-content { width: 92%; height: 85%; border-radius: 20px; }
-            input[type="text"] { padding-right: 80px; }
-            .search-btn { padding: 8px 15px; }
+            body.searching main { padding-top: 90px; }
+            #modal-content { width: 95%; height: 90%; }
         }
     </style>
 </head>
 <body>
 
-    <div style="position: fixed; top: 20px; left: 20px; font-weight: 800; z-index: 999; cursor: pointer;" onclick="location.reload()">
-        🐱 BeCat.Tech
-    </div>
-
-    <div class="search-wrapper" id="searchWrapper">
+    <header id="mainHeader">
         <div class="logo" onclick="location.reload()">BeCat<span>.Tech</span></div>
         <div class="search-container">
-            <input type="text" id="query" placeholder="Ask Wikipedia..." autocomplete="off">
-            <button class="search-btn" onclick="executeSearch()">Search</button>
+            <input type="text" id="userInput" placeholder="Search Wikipedia..." autocomplete="off">
+            <button class="search-btn" onclick="performSearch()">Search</button>
         </div>
-    </div>
+    </header>
 
-    <main id="main-results">
-        <div id="results-list"></div>
+    <main id="resultsArea">
+        <div id="resultsList"></div>
     </main>
 
     <div id="modal-overlay" onclick="closeModal()">
@@ -214,28 +226,25 @@
     </div>
 
     <footer>
-        <div class="links">
-            <a href="https://shahed.gt.tc/">Shahed</a>
-            <a href="#">Privacy</a>
-            <a href="#">Terms</a>
-            <a href="#">Products</a>
-        </div>
+        <a href="https://shahed.gt.tc/">Shahed</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Products</a>
     </footer>
 
     <script>
-        async function executeSearch() {
-            const input = document.getElementById('query').value;
-            const resultsMain = document.getElementById('main-results');
-            const list = document.getElementById('results-list');
+        async function performSearch() {
+            const query = document.getElementById('userInput').value;
+            const resultsArea = document.getElementById('resultsArea');
+            const list = document.getElementById('resultsList');
 
-            if (!input) return;
+            if (!query) return;
 
-            // Transition UI to Search Mode
             document.body.classList.add('searching');
-            resultsMain.style.display = "block";
-            list.innerHTML = "<p style='text-align:center;'>Fetching data from Wikipedia...</p>";
+            resultsArea.style.display = "block";
+            list.innerHTML = "<p style='text-align:center; margin-top:20px;'>Fetching knowledge...</p>";
 
-            const url = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(input)}&limit=12&format=json&origin=*`;
+            const url = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(query)}&limit=12&format=json&origin=*`;
 
             try {
                 const response = await fetch(url);
@@ -243,7 +252,7 @@
                 list.innerHTML = "";
 
                 if (data[1].length === 0) {
-                    list.innerHTML = "<p style='text-align:center;'>No Wikipedia results found for this topic.</p>";
+                    list.innerHTML = "<p style='text-align:center;'>No Wikipedia results found.</p>";
                     return;
                 }
 
@@ -251,9 +260,9 @@
                     const item = document.createElement('div');
                     item.className = 'result-item';
                     item.innerHTML = `
-                        <cite style="font-size:11px; color:var(--mocha);">${data[3][i]}</cite>
+                        <cite style="font-size:11px; color:var(--mocha); display:block; margin-bottom:4px;">${data[3][i]}</cite>
                         <a href="javascript:void(0)" onclick="openModal('${data[3][i]}')">${title}</a>
-                        <p style="font-size:14px; color:#555;">${data[2][i] || 'Full content available in the preview.'}</p>
+                        <p style="font-size:14px; line-height:1.5;">${data[2][i] || 'Click to view the full Wikipedia entry.'}</p>
                     `;
                     list.appendChild(item);
                 });
@@ -261,7 +270,7 @@
                 window.scrollTo({top: 0, behavior: 'smooth'});
 
             } catch (err) {
-                list.innerHTML = "<p>Connection error. Please check your internet.</p>";
+                list.innerHTML = "<p style='text-align:center;'>Error connecting to Wikipedia. Try again!</p>";
             }
         }
 
@@ -278,8 +287,8 @@
             document.body.style.overflow = 'auto';
         }
 
-        document.getElementById('query').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') executeSearch();
+        document.getElementById('userInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') performSearch();
         });
     </script>
 </body>
