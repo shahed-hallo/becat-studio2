@@ -9,8 +9,8 @@
         :root {
             --mocha: #8d6e63;
             --cocoa: #5d4037;
-            --cream: rgba(253, 250, 249, 0.4);
-            --sand: #d7ccc8;
+            --cream: rgba(253, 250, 249, 0.6);
+            --glass: rgba(255, 255, 255, 0.75);
         }
 
         * {
@@ -28,9 +28,10 @@
             display: flex;
             flex-direction: column;
             color: var(--cocoa);
+            overflow-x: hidden;
         }
 
-        /* --- HEADER & SEARCH --- */
+        /* --- LOGO & SEARCH --- */
         .search-wrapper {
             display: flex;
             flex-direction: column;
@@ -38,24 +39,24 @@
             justify-content: center;
             flex-grow: 1;
             padding: 20px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.4s ease-in-out;
             z-index: 1000;
         }
 
         .logo {
-            font-size: 5rem;
+            font-size: clamp(3rem, 10vw, 5rem);
             font-weight: 800;
             color: var(--cocoa);
             margin-bottom: 30px;
             cursor: pointer;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            text-align: center;
         }
 
         .logo span { color: var(--mocha); }
 
         .search-container {
             width: 100%;
-            max-width: 584px;
+            max-width: 600px;
             position: relative;
             display: flex;
             align-items: center;
@@ -63,13 +64,14 @@
 
         input[type="text"] {
             width: 100%;
-            padding: 14px 90px 14px 20px; /* Adjusted padding */
-            border-radius: 24px;
-            border: 1px solid rgba(255,255,255,0.5);
+            padding: 15px 100px 15px 25px;
+            border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.4);
             outline: none;
             font-size: 16px;
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(5px);
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .search-btn {
@@ -78,60 +80,56 @@
             background: var(--mocha);
             color: white;
             border: none;
-            padding: 8px 15px;
-            border-radius: 18px;
+            padding: 10px 20px;
+            border-radius: 20px;
             cursor: pointer;
             font-weight: 600;
         }
 
-        /* --- SEARCHING STATE --- */
+        /* --- ACTIVE SEARCH STATE --- */
         body.searching .search-wrapper {
             position: fixed;
             top: 0;
-            left: 0;
             width: 100%;
-            flex-grow: 0;
             flex-direction: row;
-            justify-content: center;
+            justify-content: space-between;
             padding: 15px 5%;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
         body.searching .logo {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             margin-bottom: 0;
-            margin-right: 20px;
         }
 
         /* --- RESULTS --- */
         #results-section {
             display: none;
-            padding: 100px 5% 50px 5%;
-            max-width: 800px;
+            padding: 120px 5% 50px 5%;
+            max-width: 900px;
             margin: 0 auto;
-            animation: fadeIn 0.5s ease;
+            width: 100%;
         }
-
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .result-item {
             margin-bottom: 20px;
-            background: rgba(255, 255, 255, 0.85);
-            padding: 15px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            background: var(--glass);
+            padding: 20px;
+            border-radius: 15px;
+            backdrop-filter: blur(5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
         }
 
         .result-item a {
-            font-size: 1.15rem;
+            font-size: 1.3rem;
             color: #1a0dab;
             text-decoration: none;
-            font-weight: 500;
+            font-weight: 600;
         }
 
-        /* --- MODAL --- */
+        /* --- MODAL (The Glass Frame) --- */
         #modal-overlay {
             display: none;
             position: fixed;
@@ -139,97 +137,82 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.9);
+            background: rgba(0,0,0,0.4); /* Dim the background slightly */
             z-index: 2000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(3px); /* Blur the cat slightly */
         }
 
         #modal-content {
-            width: 95%;
-            height: 90%;
-            background: white;
-            border-radius: 12px;
+            width: 85%;  /* Gap on left/right */
+            height: 80%; /* Gap on top/bottom */
+            background: rgba(255, 255, 255, 0.7); /* Semi-transparent white */
+            border-radius: 25px; /* Rounded corners */
             position: relative;
             overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.3);
+            display: flex;
+            flex-direction: column;
         }
 
         #modal-iframe {
             width: 100%;
             height: 100%;
             border: none;
+            background: transparent;
         }
 
         #close-modal {
             position: absolute;
-            top: 5px;
-            right: 10px;
-            font-size: 35px;
+            top: 15px;
+            right: 20px;
+            font-size: 30px;
             cursor: pointer;
             z-index: 2100;
-            color: #333;
+            color: #000;
+            background: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         footer {
-            background: rgba(242, 242, 242, 0.3);
-            padding: 15px;
-            margin-top: auto;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
             text-align: center;
+            backdrop-filter: blur(5px);
         }
 
-        footer a {
-            color: var(--cocoa);
-            text-decoration: none;
-            margin: 0 10px;
-            font-size: 14px;
-        }
+        footer a { color: var(--cocoa); text-decoration: none; margin: 0 10px; font-size: 14px; }
 
-        /* --- MOBILE RESPONSIVE QUERIES --- */
-        @media (max-width: 600px) {
-            .logo {
-                font-size: 3rem;
-            }
-
-            body.searching .logo {
-                display: none; /* Hide logo on mobile search to save space */
-            }
-
-            body.searching .search-wrapper {
-                padding: 10px;
-            }
-
-            .search-container {
-                max-width: 100%;
-            }
-
-            #results-section {
-                padding-top: 80px;
-            }
-
+        /* --- RESPONSIVE ADJUSTMENTS --- */
+        @media (max-width: 768px) {
             #modal-content {
-                width: 100%;
-                height: 100%;
-                border-radius: 0;
+                width: 92%;
+                height: 85%;
             }
-
-            footer a {
-                display: inline-block;
-                margin-bottom: 5px;
-            }
+            body.searching .logo { display: none; }
+            body.searching .search-wrapper { justify-content: center; }
+            #results-section { padding-top: 100px; }
         }
     </style>
 </head>
 <body>
 
-    <div style="position: fixed; top: 15px; left: 15px; font-size: 1.2rem; font-weight: 800; color: var(--cocoa); z-index: 999; cursor: pointer;" onclick="location.reload()">
-        🐱 BeCat<span style="color: var(--mocha);">.Tech</span>
+    <div style="position: fixed; top: 20px; left: 20px; font-weight: 800; color: var(--cocoa); z-index: 999; cursor: pointer;" onclick="location.reload()">
+        🐱 BeCat.Tech
     </div>
 
-    <div class="search-wrapper" id="headerWrapper">
-        <div class="logo" id="mainLogo" onclick="location.reload()">BeCat<span>.Tech</span></div>
+    <div class="search-wrapper">
+        <div class="logo" onclick="location.reload()">BeCat<span>.Tech</span></div>
         <div class="search-container">
-            <input type="text" id="searchInput" autocomplete="off" placeholder="Wikipedia Search...">
-            <button class="search-btn" onclick="handleSearch()">Go</button>
+            <input type="text" id="searchInput" autocomplete="off" placeholder="Search the web...">
+            <button class="search-btn" onclick="handleSearch()">Search</button>
         </div>
     </div>
 
@@ -246,11 +229,10 @@
 
     <footer>
         <div class="footer-links">
-            <a href="https://shahed.gt.tc/">Shahed</a>
-            <a href="privacy.html">Privacy</a>
-            <a href="terms.html">Terms</a>
-            <a href="business.html">Business</a>
-            <a href="prodects.html">Products</a>
+            <a href="#">Shahed</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+            <a href="#">Products</a>
         </div>
     </footer>
 
@@ -264,45 +246,35 @@
 
             document.body.classList.add('searching');
             resultsSection.style.display = "block";
-            resultsList.innerHTML = "<p style='text-align:center;'>Searching Wikipedia...</p>";
+            resultsList.innerHTML = "<p style='text-align:center;'>Searching...</p>";
 
-            const apiEndpoint = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(query)}&limit=12&namespace=0&format=json&origin=*`;
+            // Fetching from Wikipedia API
+            const apiEndpoint = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(query)}&limit=10&namespace=0&format=json&origin=*`;
 
             try {
                 const response = await fetch(apiEndpoint);
                 const data = await response.json();
-                
-                const titles = data[1];
-                const snippets = data[2];
-                const links = data[3];
-
                 resultsList.innerHTML = "";
 
-                if (titles.length === 0) {
-                    resultsList.innerHTML = "<p style='text-align:center;'>No results found.</p>";
+                if (data[1].length === 0) {
+                    resultsList.innerHTML = "<p>No results found.</p>";
                     return;
                 }
 
-                for (let i = 0; i < titles.length; i++) {
-                    addResult(titles[i], links[i], snippets[i]);
+                for (let i = 0; i < data[1].length; i++) {
+                    const div = document.createElement('div');
+                    div.className = 'result-item';
+                    div.innerHTML = `
+                        <cite style="display:block; font-size:11px; color:var(--mocha); margin-bottom:5px;">${data[3][i]}</cite>
+                        <a href="javascript:void(0)" onclick="openModal('${data[3][i]}')">${data[1][i]}</a>
+                        <p style="font-size:14px; margin-top:5px; color:#444;">${data[2][i] || 'Click to view article...'}</p>
+                    `;
+                    resultsList.appendChild(div);
                 }
-
-                window.scrollTo(0, 0);
+                window.scrollTo(0,0);
             } catch (e) {
-                resultsList.innerHTML = "<p>Error reaching Wikipedia.</p>";
+                resultsList.innerHTML = "<p>Search error.</p>";
             }
-        }
-
-        function addResult(title, url, snippet) {
-            const resultsList = document.getElementById('results-list');
-            const div = document.createElement('div');
-            div.className = 'result-item';
-            div.innerHTML = `
-                <cite style="display:block; font-size:11px; color:var(--mocha); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">${url}</cite>
-                <a href="javascript:void(0)" onclick="openModal('${url}')">${title}</a>
-                <p style="font-size:14px; margin-top:5px; color:#555;">${snippet || 'Read more on Wikipedia...'}</p>
-            `;
-            resultsList.appendChild(div);
         }
 
         function openModal(url) {
@@ -321,16 +293,6 @@
 
         document.getElementById('searchInput').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') handleSearch();
-        });
-
-        document.querySelectorAll('footer a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                const url = this.getAttribute('href');
-                if (url && url !== '#' && !url.startsWith('javascript')) {
-                    e.preventDefault();
-                    openModal(url);
-                }
-            });
         });
     </script>
 </body>
